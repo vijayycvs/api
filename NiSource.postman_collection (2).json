@@ -1,0 +1,1610 @@
+{
+	"info": {
+		"_postman_id": "5cfac264-0aff-437c-a69d-73ec36579c69",
+		"name": "NiSource",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "NiSource UAT",
+			"item": [
+				{
+					"name": "RestConnect",
+					"item": [
+						{
+							"name": "Authorization",
+							"item": [
+								{
+									"name": "1 - Basic Authorization",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code == 200) {\r",
+													"    var responseHeaders = pm.response.headers.all()\r",
+													"    responseHeaders.forEach(function(header){\r",
+													"        if(header.key == \"DWAYSessionId\"){\r",
+													"            pm.collectionVariables.set(\"DWAYSessionId\", header.value)\r",
+													"            return;\r",
+													"        }    \r",
+													"    })\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{server}}/RESTConnect/rest/v2/subscribers/{{subscriber}}",
+											"protocol": "https",
+											"host": [
+												"{{server}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Module CAP",
+							"item": [
+								{
+									"name": "2 - Module CAP - Get A List Of Objects",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetIdentifier(sVariable) {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        var jsonResponse = pm.response.json();\r",
+													"\r",
+													"        var allValues = Object.values(jsonResponse);\r",
+													"        for (let value of allValues) {\r",
+													"            var Identifier = value[\"Identifier\"];\r",
+													"            if (Identifier != null) {\r",
+													"                pm.collectionVariables.set(sVariable, Identifier);\r",
+													"                pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"                break;\r",
+													"            }\r",
+													"        };\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetIdentifier(\"CAP_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server}}/RESTConnect/rest/v2/subscribers/{{subscriber}}/modules/{{module-cap}}/?q=Identifier=*&f=Identifier,ObjectIdentifier",
+											"protocol": "https",
+											"host": [
+												"{{server}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber}}",
+												"modules",
+												"{{module-cap}}",
+												""
+											],
+											"query": [
+												{
+													"key": "q",
+													"value": "Identifier=*"
+												},
+												{
+													"key": "f",
+													"value": "Identifier,ObjectIdentifier"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3 - Module CAP - Get A List Of Objects With Paging",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetIdentifier(sVariable) {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        var jsonResponse = pm.response.json();\r",
+													"\r",
+													"        var allValues = Object.values(jsonResponse);\r",
+													"        for (let value of allValues) {\r",
+													"            var Identifier = value[\"Identifier\"];\r",
+													"            if (Identifier != null) {\r",
+													"                pm.collectionVariables.set(sVariable, Identifier);\r",
+													"                pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"                break;\r",
+													"            }\r",
+													"        };\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetIdentifier(\"CAP_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server}}/RESTConnect/rest/v2/subscribers/{{subscriber}}/modules/{{module-cap}}/?q=Identifier=*&f=Identifier,ObjectIdentifier&r=5000&p=0",
+											"protocol": "https",
+											"host": [
+												"{{server}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber}}",
+												"modules",
+												"{{module-cap}}",
+												""
+											],
+											"query": [
+												{
+													"key": "q",
+													"value": "Identifier=*"
+												},
+												{
+													"key": "f",
+													"value": "Identifier,ObjectIdentifier"
+												},
+												{
+													"key": "r",
+													"value": "5000"
+												},
+												{
+													"key": "p",
+													"value": "0"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4 - Module CAP - Get A Specific Object",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetIdentifier(sInput, sVariable) {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        var jsonResponse = pm.response.json();\r",
+													"\r",
+													"        var allValues = Object.values(jsonResponse);\r",
+													"        for (let value of allValues) {\r",
+													"            var sData = value[sInput];\r",
+													"            if (sData != null) {\r",
+													"                pm.collectionVariables.set(sVariable, sData);\r",
+													"                pm.test(\"Successful Request, \" + sInput + \": \" + sData)\r",
+													"                console.log(\"sInput: \" + sInput);\r",
+													"                break;\r",
+													"            }\r",
+													"        };\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"        pm.test(\"Success\", function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetIdentifier(\"Identifier\", \"CAP_Identifier\");\r",
+													"GetIdentifier(\"Reason\", \"CAP_Reason\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server}}/RESTConnect/rest/v2/subscribers/{{subscriber}}/modules/{{module-cap}}/{{CAP_Identifier}}",
+											"protocol": "https",
+											"host": [
+												"{{server}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber}}",
+												"modules",
+												"{{module-cap}}",
+												"{{CAP_Identifier}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5 - Module CAP - Create An Object",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function checkInsert(sVariable) {\r",
+													"    if (pm.response.code == 201) {\r",
+													"        const responseHeaderLocation = pm.response.headers.get(\"Location\");\r",
+													"        finalLocations = responseHeaderLocation.split(\"/\")\r",
+													"        if (finalLocations.length > 0) {\r",
+													"            const Identifier = finalLocations[finalLocations.length - 1]\r",
+													"            pm.collectionVariables.set(sVariable, Identifier)\r",
+													"            pm.test(\"TimeStamp\" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"            pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"        }\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"checkInsert(\"work_order_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Reason\": \"Inactive\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server}}/RESTConnect/rest/v2/subscribers/{{subscriber}}/modules/{{module-cap}}",
+											"protocol": "https",
+											"host": [
+												"{{server}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber}}",
+												"modules",
+												"{{module-cap}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "6 - Module CAP - Update An Object",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetCheckUpdate() {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"        pm.test(\"Successful Updated: \" + pm.collectionVariables.get(\"work_order_Identifier\"));\r",
+													"\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetCheckUpdate();"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Reason\": \"{{CAP_Reason}} {{current_timestamp}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server}}/RESTConnect/rest/v2/subscribers/{{subscriber}}/modules/{{module-cap}}/{{CAP_Identifier}}",
+											"protocol": "https",
+											"host": [
+												"{{server}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber}}",
+												"modules",
+												"{{module-cap}}",
+												"{{CAP_Identifier}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "SearchAPI",
+					"item": [
+						{
+							"name": "Module CAP",
+							"item": [
+								{
+									"name": "2 - Get Data",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											},
+											{
+												"key": "subscriber",
+												"value": "{{subscriber}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"modules\": [\r\n        \"{{module-cap}}\"\r\n    ],\r\n    \"returnFields\": [\r\n        \"_Identifier\",\r\n        \"Status\",\r\n        \"InitiatedBy\",\r\n        \"ObjectIdentifier\",\r\n        \"ApprovalLevel\",\r\n        \"Synopsis\",\r\n        \"Originator\",\r\n        \"Comments\",\r\n        \"CrossReferences\"\r\n    ],\r\n    \"sort\": \"_Identifier asc\",\r\n    \"query\": {\r\n        \"field\": \"_LastUpdatedOn\",\r\n        \"condition\": \"TODAY\",\r\n        \"term\": [\r\n            \"matchMe\"\r\n        ]\r\n    },\r\n    \"size\": 5000,\r\n    \"page\": 0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://search-config.devonway.com/api/v1/search",
+											"protocol": "https",
+											"host": [
+												"search-config",
+												"devonway",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"search"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "1 - Get Credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"if (pm.response.code == 200) {\r",
+											"    var responseHeaders = pm.response.headers.all()\r",
+											"    responseHeaders.forEach(function(header){\r",
+											"        if(header.key == \"DWAYSessionId\"){\r",
+											"            pm.environment.set(\"DWAYSessionId\", header.value)\r",
+											"            return;\r",
+											"        }    \r",
+											"    })\r",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "subscriber",
+										"value": "{{subscriber}}",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "username",
+											"value": "username",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "password",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://search-config.devonway.com/api/auth?subscriber={{subscriber}}",
+									"protocol": "https",
+									"host": [
+										"search-config",
+										"devonway",
+										"com"
+									],
+									"path": [
+										"api",
+										"auth"
+									],
+									"query": [
+										{
+											"key": "subscriber",
+											"value": "{{subscriber}}"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "password",
+						"value": "<YOUR_PASSWORD>",
+						"type": "string"
+					},
+					{
+						"key": "username",
+						"value": "<YOUR_USER_NAME>",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "NiSource BUILD",
+			"item": [
+				{
+					"name": "RESTConnect",
+					"item": [
+						{
+							"name": "Authorization",
+							"item": [
+								{
+									"name": "1 - Basic Authorization",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"if (pm.response.code == 200) {\r",
+													"    var responseHeaders = pm.response.headers.all()\r",
+													"    responseHeaders.forEach(function(header){\r",
+													"        if(header.key == \"DWAYSessionId\"){\r",
+													"            pm.collectionVariables.set(\"DWAYSessionId\", header.value)\r",
+													"            return;\r",
+													"        }    \r",
+													"    })\r",
+													"}"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Module Work Order BUILD",
+							"item": [
+								{
+									"name": "2 - Module Work Order - Get A List Of Objects",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetIdentifier(sInput, sVariable) {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        var jsonResponse = pm.response.json();\r",
+													"\r",
+													"        var allValues = Object.values(jsonResponse);\r",
+													"        for (let value of allValues) {\r",
+													"            var sData = value[sInput];\r",
+													"            if (sData != null) {\r",
+													"                pm.collectionVariables.set(sVariable, sData);\r",
+													"                pm.test(\"Successful Request, \" + sInput + \": \" + sData)\r",
+													"                break;\r",
+													"            }\r",
+													"        };\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetIdentifier(\"Identifier\", \"work_order_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_work_order}}/?q=Identifier=*&f=Identifier,Status,WorkOrder,JobDescription,JobType,State,SourceSystem,OpsCenter,JobStatus,OtherDetails",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_work_order}}",
+												""
+											],
+											"query": [
+												{
+													"key": "q",
+													"value": "Identifier=*"
+												},
+												{
+													"key": "f",
+													"value": "Identifier,Status,WorkOrder,JobDescription,JobType,State,SourceSystem,OpsCenter,JobStatus,OtherDetails"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3 - Module Work Order - Get A List Of Objects With Paging",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_work_order}}/?q=Identifier=*&f=Identifier,Status,WorkOrder,JobDescription,JobType,State,SourceSystem,OpsCenter,JobStatus,OtherDetails&r=5000&p=0",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_work_order}}",
+												""
+											],
+											"query": [
+												{
+													"key": "q",
+													"value": "Identifier=*"
+												},
+												{
+													"key": "f",
+													"value": "Identifier,Status,WorkOrder,JobDescription,JobType,State,SourceSystem,OpsCenter,JobStatus,OtherDetails"
+												},
+												{
+													"key": "r",
+													"value": "5000"
+												},
+												{
+													"key": "p",
+													"value": "0"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4 - Module Work Order - Get A Specific Object",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_work_order}}/{{work_order_Identifier}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_work_order}}",
+												"{{work_order_Identifier}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5 - Module Work Order - Create An Object",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function checkInsert(sVariable) {\r",
+													"    if (pm.response.code == 201) {\r",
+													"        const responseHeaderLocation = pm.response.headers.get(\"Location\");\r",
+													"        finalLocations = responseHeaderLocation.split(\"/\")\r",
+													"        if (finalLocations.length > 0) {\r",
+													"            const Identifier = finalLocations[finalLocations.length - 1]\r",
+													"            pm.collectionVariables.set(sVariable, Identifier)\r",
+													"            pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"            pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"        }\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"checkInsert(\"work_order_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n        \"JobStatus\": \"Job Status Test {{current_timestamp}}\",\r\n        \"Status\": \"Active\",\r\n        \"OpsCenter\": \"Ops Center {{current_timestamp}}\",\r\n        \"WorkOrder\": \"WorkOrder {{current_timestamp}}\",\r\n        \"OtherDetails\": \"Other Details {{current_timestamp}}\",\r\n        \"JobType\": \"JobType {{current_timestamp}}\",\r\n        \"JobDescription\": \"JobDescription {{current_timestamp}}\",\r\n        \"State\": \"State {{current_timestamp}}\",\r\n        \"SourceSystem\": \"SourceSystem {{current_timestamp}}\",\r\n        \"ReportingAuthority\": \"NiSource\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_work_order}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_work_order}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "6 - Module Work Order - Update An Object",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetCheckUpdate() {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"        pm.test(\"Successful Updated: \" + pm.collectionVariables.get(\"work_order_Identifier\"));\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetCheckUpdate();"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n        \"JobStatus\": \"Job Status Test {{current_timestamp}}\",\r\n        \"Status\": \"Inactive\",\r\n        \"ReportingAuthority\": \"NiSource\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_work_order}}/{{work_order_Identifier}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_work_order}}",
+												"{{work_order_Identifier}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						},
+						{
+							"name": "Module SOP Build",
+							"item": [
+								{
+									"name": "2 - Module SOP - Get A List Of Objects",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetIdentifier(sInput, sVariable) {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        var jsonResponse = pm.response.json();\r",
+													"\r",
+													"        var allValues = Object.values(jsonResponse);\r",
+													"        for (let value of allValues) {\r",
+													"            var sData = value[sInput];\r",
+													"            if (sData != null) {\r",
+													"                pm.collectionVariables.set(sVariable, sData);\r",
+													"                pm.test(\"Successful Request, \" + sInput + \": \" + sData)\r",
+													"                break;\r",
+													"            }\r",
+													"        };\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetIdentifier(\"Identifier\", \"sop_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}/?q=Identifier=*&f=Identifier,JobType,Summary,SOP,ObjectIdentifier,SOPID,Acknowledgement,EmployeeUID,EmployeesJobTitle,DateSubmitted",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}",
+												""
+											],
+											"query": [
+												{
+													"key": "q",
+													"value": "Identifier=*"
+												},
+												{
+													"key": "f",
+													"value": "Identifier,JobType,Summary,SOP,ObjectIdentifier,SOPID,Acknowledgement,EmployeeUID,EmployeesJobTitle,DateSubmitted"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "3 - Module SOP - Get A List Of Objects With Paging",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}/?q=Identifier=*&f=Identifier,JobType,Summary,SOP,ObjectIdentifier,SOPID,Acknowledgement,EmployeeUID,EmployeesJobTitle,DateSubmitted&r=5000&p=0",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}",
+												""
+											],
+											"query": [
+												{
+													"key": "q",
+													"value": "Identifier=*"
+												},
+												{
+													"key": "f",
+													"value": "Identifier,JobType,Summary,SOP,ObjectIdentifier,SOPID,Acknowledgement,EmployeeUID,EmployeesJobTitle,DateSubmitted"
+												},
+												{
+													"key": "r",
+													"value": "5000"
+												},
+												{
+													"key": "p",
+													"value": "0"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "4 - Module SOP - Get A Specific Object",
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "GET",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}/{{sop_Identifier}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}",
+												"{{sop_Identifier}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5 - Module SOP - Create An Object",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function checkInsert(sVariable) {\r",
+													"    if (pm.response.code == 201) {\r",
+													"        const responseHeaderLocation = pm.response.headers.get(\"Location\");\r",
+													"        finalLocations = responseHeaderLocation.split(\"/\")\r",
+													"        if (finalLocations.length > 0) {\r",
+													"            const Identifier = finalLocations[finalLocations.length - 1]\r",
+													"            pm.collectionVariables.set(sVariable, Identifier)\r",
+													"            pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"            pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"        }\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"checkInsert(\"sop_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Acknowledgement\": \"Acknowledgement {{current_timestamp}}\",\r\n    \"EmployeesJobTitle\": \"Employees Job Title {{current_timestamp}}\",\r\n    \"JobType\": \"Job Type {{current_timestamp}}\",\r\n    \"SOP\": \"SOP {{current_timestamp}}\",\r\n    \"EmployeeUID\": \"TPOQUET\",\r\n    \"DateSubmitted\": \"20210629\",\r\n    \"ReportingAuthority\": \"NiSource\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "6 - Module SOP - Update An Object",
+									"event": [
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())\r",
+													""
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function GetCheckUpdate() {\r",
+													"    if (pm.response.code == 200) {\r",
+													"        pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"        pm.test(\"Successful Updated: \" + pm.collectionVariables.get(\"sop_Identifier\"));\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"GetCheckUpdate();"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "PUT",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Acknowledgement\": \"Acknowledgement {{current_timestamp}}\",\r\n    \"EmployeesJobTitle\": \"Employees Job Title {{current_timestamp}}\",\r\n    \"ReportingAuthority\": \"NiSource\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}/{{sop_Identifier}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}",
+												"{{sop_Identifier}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5 - Module SOP - Create SOP with SO Reference",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function checkInsert(sVariable) {\r",
+													"    if (pm.response.code == 201) {\r",
+													"        const responseHeaderLocation = pm.response.headers.get(\"Location\");\r",
+													"        finalLocations = responseHeaderLocation.split(\"/\")\r",
+													"        if (finalLocations.length > 0) {\r",
+													"            const Identifier = finalLocations[finalLocations.length - 1]\r",
+													"            pm.collectionVariables.set(sVariable, Identifier)\r",
+													"            pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"            pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"        }\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"checkInsert(\"sop_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Acknowledgement\": \"Acknowledgement {{current_timestamp}}\",\r\n    \"EmployeesJobTitle\": \"Employees Job Title {{current_timestamp}}\",\r\n    \"JobType\": \"Job Type {{current_timestamp}}\",\r\n    \"SOP\": \"SOP {{current_timestamp}}\",\r\n    \"EmployeeUID\": \"TPOQUET\",\r\n    \"DateSubmitted\": \"20210629\",\r\n    \"WorkOrder\": {\r\n        \"ModuleCode\": \"NI-WO\",\r\n        \"Identifier\": \"{{work_order_Identifier}}\"\r\n    },\r\n    \"ReportingAuthority\": \"NiSource\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "5 - Module SOP - Create SOP with Full SO",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"function checkInsert(sVariable) {\r",
+													"    if (pm.response.code == 201) {\r",
+													"        const responseHeaderLocation = pm.response.headers.get(\"Location\");\r",
+													"        finalLocations = responseHeaderLocation.split(\"/\")\r",
+													"        if (finalLocations.length > 0) {\r",
+													"            const Identifier = finalLocations[finalLocations.length - 1]\r",
+													"            pm.collectionVariables.set(sVariable, Identifier)\r",
+													"            pm.test(\"TimeStamp: \" + pm.collectionVariables.get(\"current_timestamp\"))\r",
+													"            pm.test(\"Successful Request, Identifier: \" + Identifier)\r",
+													"        }\r",
+													"    } else {\r",
+													"        pm.test(\"Failed Request, Reason: \" + pm.response.text(), function () { pm.response.to.have.status(200); } );\r",
+													"    }\r",
+													"}\r",
+													"\r",
+													"checkInsert(\"sop_Identifier\");"
+												],
+												"type": "text/javascript"
+											}
+										},
+										{
+											"listen": "prerequest",
+											"script": {
+												"exec": [
+													"var current_timestamp = new Date();\r",
+													"pm.collectionVariables.set(\"current_timestamp\", current_timestamp.toISOString());\r",
+													"console.log(\"Test TimeStamp: \" + current_timestamp.toISOString())"
+												],
+												"type": "text/javascript"
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "noauth"
+										},
+										"method": "POST",
+										"header": [
+											{
+												"key": "DWAYSessionId",
+												"value": "{{DWAYSessionId}}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"Acknowledgement\": \"Acknowledgement {{current_timestamp}}\",\r\n    \"EmployeesJobTitle\": \"Employees Job Title {{current_timestamp}}\",\r\n    \"JobType\": \"Job Type {{current_timestamp}}\",\r\n    \"SOP\": \"SOP {{current_timestamp}}\",\r\n    \"EmployeeUID\": \"TPOQUET\",\r\n    \"DateSubmitted\": \"20210629\",\r\n    \"WorkOrder\": {\r\n        \"ModuleCode\": \"NI-WO\",\r\n        \"JobStatus\": \"FROM SOP Job Status Test {{current_timestamp}}\",\r\n        \"Status\": \"Active\",\r\n        \"OpsCenter\": \"FROM SOP Ops Center {{current_timestamp}}\",\r\n        \"WorkOrder\": \"FROM SOP WorkOrder {{current_timestamp}}\",\r\n        \"OtherDetails\": \"FROM SOP Other Details {{current_timestamp}}\",\r\n        \"JobType\": \"FROM SOP JobType {{current_timestamp}}\",\r\n        \"JobDescription\": \"FROM SOP JobDescription {{current_timestamp}}\",\r\n        \"State\": \"FROM SOP State {{current_timestamp}}\",\r\n        \"SourceSystem\": \"FROM SOP SourceSystem {{current_timestamp}}\",\r\n        \"ReportingAuthority\": \"NiSource\"\r\n    },\r\n    \"ReportingAuthority\": \"NiSource\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://{{server_build}}/RESTConnect/rest/v2/subscribers/{{subscriber_build}}/modules/{{module_sop}}",
+											"protocol": "https",
+											"host": [
+												"{{server_build}}"
+											],
+											"path": [
+												"RESTConnect",
+												"rest",
+												"v2",
+												"subscribers",
+												"{{subscriber_build}}",
+												"modules",
+												"{{module_sop}}"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"auth": {
+								"type": "noauth"
+							},
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							]
+						}
+					]
+				}
+			],
+			"auth": {
+				"type": "basic",
+				"basic": [
+					{
+						"key": "username",
+						"value": "<YOUR_USER_NAME>",
+						"type": "string"
+					},
+					{
+						"key": "password",
+						"value": "<YOUR_PASSWORD>",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "server",
+			"value": "rest-config.devonway.com"
+		},
+		{
+			"key": "server_build",
+			"value": "rest-config.devonway.com"
+		},
+		{
+			"key": "subscriber",
+			"value": "WMTDZ18061"
+		},
+		{
+			"key": "subscriber_build",
+			"value": "DWENN13659"
+		},
+		{
+			"key": "DWAYSessionId",
+			"value": ""
+		},
+		{
+			"key": "module-cap",
+			"value": "NI-PI2"
+		},
+		{
+			"key": "CAP_Identifier",
+			"value": ""
+		},
+		{
+			"key": "CAP_Reason",
+			"value": ""
+		},
+		{
+			"key": "module_work_order",
+			"value": "NI-WO"
+		},
+		{
+			"key": "work_order_Identifier",
+			"value": ""
+		},
+		{
+			"key": "current_timestamp",
+			"value": ""
+		},
+		{
+			"key": "module_sop",
+			"value": "NI-SOP"
+		},
+		{
+			"key": "sop_Identifier",
+			"value": ""
+		}
+	]
+}
